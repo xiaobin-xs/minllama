@@ -1,5 +1,5 @@
 # Min-Llama Assignment
-by Vijay Viswanathan (based on the previous [minbert-assignment](https://github.com/neubig/minbert-assignment))
+Cloned from [here](https://github.com/neubig/minllama-assignment.git); referred to this [link](https://gist.github.com/0xjac/85097472043b697ab57ba1b1c7530274) and this [link](https://stackoverflow.com/questions/10065526/github-how-to-make-a-fork-of-public-repository-private) of how to fork a public repo and make it private.
 
 This is an exercise in developing a minimalist version of Llama2, part of Carnegie Mellon University's [CS11-711 Advanced NLP](http://phontron.com/class/anlp2024/).
 
