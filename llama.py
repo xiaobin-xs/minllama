@@ -44,7 +44,9 @@ class RMSNorm(torch.nn.Module):
             torch.Tensor: The normalized tensor.
         """
         # todo
-        raise NotImplementedError
+        rms = torch.sqrt(torch.mean(x**2, dim=-1, keepdim=True) + self.eps)
+        return x / rms
+        # raise NotImplementedError
 
     def forward(self, x):
         """
@@ -94,7 +96,12 @@ class Attention(nn.Module):
         attention matrix before applying it to the value tensor.
         '''
         # todo
-        raise NotImplementedError
+        ## To-Do: add layernorm?
+        # we want a set of weights to applied to each tokens in the key, so the softmax is applied to the last dimension - the seqlen from key
+        weight = F.softmax(torch.matmul(query, key.transpose(2,3)) / torch.sqrt(self.head_dim), dim=3) # (bs, n_local_heads, seqlen, seqlen)
+        att = torch.matmul(self.attn_dropout(weight), value) # (bs, n_local_heads, seqlen, head_dim)
+        return att
+        # raise NotImplementedError
 
     def forward(
         self,
@@ -134,7 +141,7 @@ class Attention(nn.Module):
         output = self.compute_query_key_value_scores(query, key, value)
 
         # restore time as batch dimension and concat heads
-        output = output.transpose(1, 2).contiguous().view(batch_size, seqlen, -1)
+        output = output.transpose(1, 2).contiguous().view(batch_size, seqlen, -1) # (bs, seqlen, n_local_heads * head_dim)
 
         # final projection into the residual stream
         output = self.resid_dropout(self.compute_output(output))
@@ -197,7 +204,22 @@ class LlamaLayer(nn.Module):
            output of the feed-forward network
         '''
         # todo
-        raise NotImplementedError
+        # 1) layer normalization of the input (via Root Mean Square layer normalization)
+        out = self.attention_norm(x)
+        # 2) self-attention on the layer-normalized input
+        out = self.attention(out)
+        # 3) a residual connection (i.e., add the input to the output of the self-attention)
+        out += x
+        # 3) layer normalization on the output of the self-attention
+        out2 = self.ffn_norm(out)
+        # 4) a feed-forward network on the layer-normalized output of the self-attention
+        out2 = self.feed_forward(out2)
+        # 5) add a residual connection from the unnormalized self-attention output to the
+        #    output of the feed-forward network
+        out2 += out
+        
+        return out2
+        # raise NotImplementedError
 
 class Llama(LlamaPreTrainedModel):
     def __init__(self, config: LlamaConfig):
