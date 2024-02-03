@@ -217,7 +217,7 @@ class LlamaLayer(nn.Module):
         # 5) add a residual connection from the unnormalized self-attention output to the
         #    output of the feed-forward network
         out2 += out
-        
+
         return out2
         # raise NotImplementedError
 
@@ -294,13 +294,13 @@ class Llama(LlamaPreTrainedModel):
             idx_cond = idx if idx.size(1) <= self.params.max_seq_len else idx[:, -self.params.max_seq_len:]
             # forward the model to get the logits for the index in the sequence
             logits, _ = self(idx_cond)
-            logits = logits[:, -1, :] # crop to just the final time step
+            logits = logits[:, -1, :] # crop to just the final time step, (bs, vocab_size)
             # todo
-            raise NotImplementedError
+            # raise NotImplementedError
 
             if temperature == 0.0:
                 # select the single most likely index
-                idx_next = None
+                idx_next = torch.argmax(logits, dim=1, keepdim=True)
             else:
                 '''
                 Perform temperature sampling:
@@ -311,7 +311,13 @@ class Llama(LlamaPreTrainedModel):
 
                 Note that we are not using top-k sampling/nucleus sampling in this procedure.
                 '''
-                idx_next = None
+                # 1) identify  the logits at the final step.
+                # 2) scale (divide) these probabilities by the given temperature.
+                logits = logits / temperature
+                # 3) normalize the scaled logits with a softmax to obtain scaled probabilities.
+                weights = F.softmax(logits, dim=1)
+                # 4) sample from the scaled probability distribution.
+                idx_next = torch.multinomial(weights, 1, replacement=True) # the replacement does not matter as we are only sampling one token
             # append sampled index to the running sequence and continue
             idx = torch.cat((idx, idx_next), dim=1)
 
