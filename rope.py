@@ -58,8 +58,6 @@ def apply_rotary_emb(
     # reshape xq and xk to match the complex representation
     query_real, query_imag = query.float().reshape(query.shape[:-1] + (-1, 2)).unbind(-1) # (bs, seqlen, n_local_heads, head_dim//2)
     key_real, key_imag = key.float().reshape(key.shape[:-1] + (-1, 2)).unbind(-1)
-
-    # torch.view_as_complex(xq.float().reshape(*xq.shape[:-1], -1, 2))
     # This separates each query/key vector into its odd and even indices (assuming *one-indexing*).
     # query_real contains q_1, q_3, q_5, ... and query_imag contains q_2, q_4, q_6, ...
 
