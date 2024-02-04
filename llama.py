@@ -98,7 +98,7 @@ class Attention(nn.Module):
         # todo
         ## To-Do: add layernorm?
         # we want a set of weights to applied to each tokens in the key, so the softmax is applied to the last dimension - the seqlen from key
-        weight = F.softmax(torch.matmul(query, key.transpose(2,3)) / torch.sqrt(self.head_dim), dim=3) # (bs, n_local_heads, seqlen, seqlen)
+        weight = F.softmax(torch.matmul(query, key.transpose(2,3)) / math.sqrt(self.head_dim), dim=3) # (bs, n_local_heads, seqlen, seqlen)
         att = torch.matmul(self.attn_dropout(weight), value) # (bs, n_local_heads, seqlen, head_dim)
         return att
         # raise NotImplementedError
