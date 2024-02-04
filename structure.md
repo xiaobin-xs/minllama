@@ -42,6 +42,7 @@ Components that require your implementations are comment with ```#todo```. The d
 * ```llama.LlamaLayer.forward```
 * ```llama.Llama.generate```
 * ```rope.apply_rotary_emb``` (this one may be tricky! you can use `rope_test.py` to test your implementation)
+  * referred to this [implementation](https://github.com/facebookresearch/llama/blob/main/llama/model.py#L80) and [this](https://github.com/facebookresearch/llama/blob/main/llama/model.py#L132)
 * ```optimizer.AdamW.step```
 * ```classifier.LlamaEmbeddingClassifier.forward```
 

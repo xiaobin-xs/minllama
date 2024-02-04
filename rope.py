@@ -57,20 +57,40 @@ def apply_rotary_emb(
     # You may also benefit from https://blog.eleuther.ai/rotary-embeddings/.
 
     # reshape xq and xk to match the complex representation
-    query_real, query_imag = query.float().reshape(query.shape[:-1] + (-1, 2)).unbind(-1)
+    query_real, query_imag = query.float().reshape(query.shape[:-1] + (-1, 2)).unbind(-1) # (bs, seqlen, n_local_heads, head_dim//2)
     key_real, key_imag = key.float().reshape(key.shape[:-1] + (-1, 2)).unbind(-1)
+
+    # torch.view_as_complex(xq.float().reshape(*xq.shape[:-1], -1, 2))
     # This separates each query/key vector into its odd and even indices (assuming *one-indexing*).
     # query_real contains q_1, q_3, q_5, ... and query_imag contains q_2, q_4, q_6, ...
 
     # First, compute the trigonometric values in the second and fourth columns in
     # slide 22 (linked above).
+    freqs = 1.0 / (theta ** (torch.arange(0, head_dim, 2)[: (head_dim // 2)].float() / head_dim)) # (head_dim//2,)
+    t = torch.arange(seqlen, device=freqs.device)  # type: ignore # (seqlen,)
+    freqs = torch.outer(t, freqs).float()  # type: ignore # (head_dim//2, seqlen)
+    cos, sin = torch.cos(freqs), torch.sin(freqs)
+    cos, sin = reshape_for_broadcast(cos, query_real), reshape_for_broadcast(sin, query_real)
 
     # Then, combine these trigonometric values with the tensors query_real, query_imag,
     # key_real, and key_imag.
+    query_out_11, query_out_12 = query_real * cos, query_imag * cos
+    query_out_21, query_out_22 = -query_imag * sin, query_real * sin
+    query_out_1 = query_out_11+query_out_21
+    query_out_2 = query_out_12+query_out_22
 
-    raise NotImplementedError
+    key_out_11, key_out_12 = key_real * cos, key_imag * cos
+    key_out_21, key_out_22 = -key_imag * sin, key_real * sin
+    key_out_1 = key_out_11+key_out_21
+    key_out_2 = key_out_12+key_out_22
 
-    query_out = None
-    key_out = None
+    # concat query_out_1 and query_out_2 with alternate order on the last dimension
+    query_out = torch.zeros_like(query)
+    query_out[:, :, :, ::2] = query_out_1
+    query_out[:, :, :, 1::2] = query_out_2
+    
+    key_out = torch.zeros_like(key)
+    key_out[:, :, :, ::2] = key_out_1
+    key_out[:, :, :, 1::2] = key_out_2
     # Return the rotary position embeddings for the query and key tensors
     return query_out, key_out
