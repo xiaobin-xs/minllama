@@ -69,7 +69,7 @@ class AdamW(Optimizer):
                 # "efficient" method of computing the bias correction as in Section 2 of Adam paper
                 if group['correct_bias']:
                     beta1_t, beta2_t = beta1 ** t, beta2 ** t
-                    alpha_t = alpha * (torch.tensor([1 - beta2_t]).sqrt() / (1 - beta1_t))
+                    alpha_t = alpha * (torch.tensor([1 - beta2_t], device=p.device).sqrt() / (1 - beta1_t))
                 else:
                     alpha_t = alpha
 

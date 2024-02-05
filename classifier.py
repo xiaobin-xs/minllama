@@ -56,7 +56,13 @@ class LlamaEmbeddingClassifier(torch.nn.Module):
 		'''
 		# todo
 		# 1)
-		logits, hiddens = self.llama(input_ids)
+		_, hiddens = self.llama(input_ids)
+		hidden_last = hiddens[:, -1, :] # ToDo: consider variable length of input_ids?
 		# 2)
-		
-		raise NotImplementedError
+		hidden_last = self.dropout(hidden_last)
+		# 2)
+		logits = self.classifier_head(hidden_last)
+		# 3)
+		log_prob = F.log_softmax(logits, dim=-1)
+		return log_prob
+		# raise NotImplementedError
