@@ -64,8 +64,8 @@ def apply_rotary_emb(
 
     # First, compute the trigonometric values in the second and fourth columns in
     # slide 22 (linked above).
-    freqs = 1.0 / (theta ** (torch.arange(0, head_dim, 2)[: (head_dim // 2)].float() / head_dim)) # (head_dim//2,)
-    t = torch.arange(seqlen, device=freqs.device)  # type: ignore # (seqlen,)
+    freqs = 1.0 / (theta ** (torch.arange(0, head_dim, 2, device=device)[: (head_dim // 2)].float() / head_dim)) # (head_dim//2,)
+    t = torch.arange(seqlen, device=device)  # type: ignore # (seqlen,)
     freqs = torch.outer(t, freqs).float()  # type: ignore # (head_dim//2, seqlen)
     cos, sin = torch.cos(freqs), torch.sin(freqs)
     cos, sin = reshape_for_broadcast(cos, query_real), reshape_for_broadcast(sin, query_real)
@@ -83,11 +83,11 @@ def apply_rotary_emb(
     key_out_2 = key_out_12+key_out_22
 
     # concat query_out_1 and query_out_2 with alternate order on the last dimension
-    query_out = torch.zeros_like(query)
+    query_out = torch.zeros_like(query, device=device)
     query_out[:, :, :, ::2] = query_out_1
     query_out[:, :, :, 1::2] = query_out_2
     
-    key_out = torch.zeros_like(key)
+    key_out = torch.zeros_like(key, device=device)
     key_out[:, :, :, ::2] = key_out_1
     key_out[:, :, :, 1::2] = key_out_2
     # Return the rotary position embeddings for the query and key tensors
