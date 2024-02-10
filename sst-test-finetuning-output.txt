@@ -942,7 +942,11 @@
 3 ||| A comprehensive and provocative film -- one that pushes the boundaries of biography , and challenges its audience .
 3 ||| The way Coppola professes his love for movies -- both colorful pop junk and the classics that unequivocally qualify as art -- is giddily entertaining .
 4 ||| A worthwhile way to spend two hours .
+<<<<<<< HEAD
 3 ||| Francophiles will snicker knowingly and you 'll want to slap them .
+=======
+2 ||| Francophiles will snicker knowingly and you 'll want to slap them .
+>>>>>>> origin/master
 4 ||| Sensitive , insightful and beautifully rendered film .
 4 ||| One of the best of the year .
 4 ||| A love for films shines through each frame and the era is recreated with obvious affection , scored to perfection with some tasty boogaloo beats .
@@ -1623,7 +1627,11 @@
 2 ||| The attempt is courageous , even if the result is wildly uneven .
 1 ||| There 's something fundamental missing from this story : something or someone to care about .
 1 ||| Too much of this well-acted but dangerously slow thriller feels like a preamble to a bigger , more complicated story , one that never materializes .
+<<<<<<< HEAD
 0 ||| When a film is created SOLELY because it 's a marketable product , soulless and ugly movies like this are the result .
+=======
+1 ||| When a film is created SOLELY because it 's a marketable product , soulless and ugly movies like this are the result .
+>>>>>>> origin/master
 2 ||| Let your silly childhood nostalgia slumber unmolested .
 1 ||| Unfortunately , Heartbreak Hospital wants to convey the same kind of haughtiness in its own sketchy material but this territory has already been explored previously with better aplomb and sardonic wit .
 1 ||| The more Kevin Costner rests on his pretty-boy laurels , the public is , regrettably , going to have tepid films like Dragonfly tossed at them .

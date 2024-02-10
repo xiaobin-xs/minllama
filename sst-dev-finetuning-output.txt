@@ -644,7 +644,11 @@
 3 ||| It treats women like idiots .
 2 ||| Though Catch Me If You Can is n't badly made , the fun slowly leaks out of the movie .
 3 ||| Just an average comedic dateflick but not a waste of time .
+<<<<<<< HEAD
 1 ||| A valueless kiddie paean to pro basketball underwritten by the NBA .
+=======
+2 ||| A valueless kiddie paean to pro basketball underwritten by the NBA .
+>>>>>>> origin/master
 3 ||| Impostor has a handful of thrilling moments and a couple of good performances , but the movie does n't quite fly .
 1 ||| For starters , the story is just too slim .
 3 ||| So much facile technique , such cute ideas , so little movie .
