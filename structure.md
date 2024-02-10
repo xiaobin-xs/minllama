@@ -42,9 +42,9 @@ Components that require your implementations are comment with ```#todo```. The d
 * ```llama.LlamaLayer.forward```
 * ```llama.Llama.generate```
 * ```rope.apply_rotary_emb``` (this one may be tricky! you can use `rope_test.py` to test your implementation)
-  * referred to this [implementation](https://github.com/facebookresearch/llama/blob/main/llama/model.py#L80) and [this](https://github.com/facebookresearch/llama/blob/main/llama/model.py#L132)
+  * I referred to this [implementation](https://github.com/facebookresearch/llama/blob/main/llama/model.py#L80) and [this](https://github.com/facebookresearch/llama/blob/main/llama/model.py#L132)
 * ```optimizer.AdamW.step```
-  * referred to the [source code](https://github.com/pytorch/pytorch/blob/main/torch/optim/adam.py#L82) of Adam implementation in PyTorch.
+  * I referred to the [source code](https://github.com/pytorch/pytorch/blob/main/torch/optim/adam.py#L82) of Adam implementation in PyTorch.
 * ```classifier.LlamaEmbeddingClassifier.forward```
 
 *ATTENTION:* you are free to re-organize the functions inside each class, but please don't change the variable names that correspond to Llama2 parameters. The change to these variable names will fail to load the pre-trained weights.
